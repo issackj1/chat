@@ -5,9 +5,6 @@ let io = require('socket.io')(http);
 let users = [];
 
 app.use(express.static('public/'))
-app.get('/', function(req, res){
-  res.sendFile(__dirname + 'public/index.html');
-});
 
 io.on('connection', function (socket) {
   socket.nickname = ID();
