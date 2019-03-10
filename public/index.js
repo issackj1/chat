@@ -3,13 +3,14 @@ let express = require('express');
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 let users = [];
-let counter = 0;
 
 app.use(express.static('public/'))
+app.get('/', function(req, res){
+  res.sendFile(__dirname + 'public/index.html');
+});
 
 io.on('connection', function (socket) {
   socket.nickname = ID();
-  counter++;
   console.log(socket.nickname + ' connected');
   users.push(socket.nickname);
   io.emit('update users', users);
