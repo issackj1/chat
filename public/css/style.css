@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Karla', sans-serif;
+}
+
+.title {
+    margin:  0 auto;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: auto;
+}
+.content {
+    display: flex;
+    flex-direction: row;
+    border-style: solid;
+    min-height: 91vh;
+    border-radius: 3px;
+    background: rgb(217, 241, 255);
+}
+
+.chat-side {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    min-width: 70%;
+    min-height: 90%;
+    background-color: white;
+
+}
+.chat-side h3 {
+    background-color: rgb(217, 241, 255);
+    margin-bottom: 0;
+}
+.chat-layer {
+    border-style: solid;
+    border-radius: 10px;
+    flex: 11;
+}
+.chat-content {
+    display: flex;
+    height: 90%;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.chat-message {
+    flex: 1;
+}
+#time-stamp{
+    flex: 1;
+    list-style: none;
+    flex-direction: column-reverse;
+}
+.friend-side {
+    display: flex;
+    flex-direction: column;
+}
+
+.online{
+    display: flex;
+    flex-direction: row;
+    font-size: 30px;
+    justify-content: center;
+    border-style: solid;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+}
+
+.online-friends {
+    list-style: none;
+}
+.online-num {
+    display: flex;
+    flex-direction: row;
+}
+
+form {
+    margin-top: 20px;
+    padding: 3px;
+    bottom: 0;
+}
+
+form input {
+    border: 0;
+    padding: 10px;
+    width: 90%;
+    margin-right: .5%;
+}
+
+form button {
+    width: 9%;
+    background: rgb(130, 224, 255);
+    border: none;
+    padding: 10px;
+}
+#outer {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: scroll;
+}
+#messages {
+    flex: 23;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 5;
+    padding: 0;
+}
+
+#messages li {
+    padding: 5px 10px;
+}
+
+#messages li:nth-child(odd) {
+    background: #eee;
+}

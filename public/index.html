@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <div class="flex-container container-fluid">
+
+        <div class="title">
+            <h1>Link Up</h1>
+        </div>
+        <div class="content container-fluid">
+            <div class="chat-side">
+                <h3 class="online-num">You are <p id="currentuser"></p>
+                </h3>
+                <div class="chat-layer">
+                    <div class="chat-content container">
+                        <ul id="outer">
+                            <ul id="messages" class="list-group"></ul>
+                        </ul>
+                    </div>
+
+                    <div class="chat-message">
+                        <form id="send-message" action="">
+                            <div class="input-group">
+                                <input id="m" autocomplete="off" type="text" class="form-control" placeholder="Deffaz"
+                                    aria-label="Deffaz" aria-describedby="button-addon2"><button
+                                    class="btn btn-outline-secondary">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="friend-side container">
+                <h1 class="online-num">ONLINE<p id="num-online"></p>
+                </h1>
+                <div class="online">
+                    <ul id="online-friends" class="online-friends list-group"></ul>
+                </div>
+                <div class="">
+                    <form id="update-name" action="">
+                        <div class="input-group">
+                            <input id="nickname" autocomplete="off" type="text" class="form-control" placeholder="Name"
+                                aria-label="Deffaz" aria-describedby="button-addon2"><button
+                                class="btn btn-outline-secondary">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        $(function () {
+            let socket = io();
+            let date = new Date();
+            $('#send-message').submit(function (e) {
+                e.preventDefault(); // prevents page reloading
+                socket.emit('chat message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+            $('#update-name').submit(function (e) {
+                e.preventDefault(); // prevents page reloading
+                $('#currentuser').text(': ' + $('#nickname').val());
+                socket.emit('send-nickname', $('#nickname').val());
+                $('#nickname').val('');
+                return false;
+            });
+            socket.on('chat message', function (msg, nickname) {
+                $('#messages').append($('<li>').text(date.getHours() + ":" + date.getMinutes() + " " + nickname + ": " + msg));
+            });
+            socket.on('init-name', function (nickname) {
+                $('#currentuser').text(': ' + nickname);
+
+            });
+            socket.on('update users', function (users) {
+                console.log('maybe here');
+                $('#online-friends').empty();
+                for (let value of users) {
+                    $('#online-friends').append($('<li>').text(value));
+                }
+                $('#num-online').text(": " + users.length);
+            });
+        });
+    </script>
+</body>
+
+</html>
