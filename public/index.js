@@ -11,10 +11,6 @@ let date = new Date();
 app.use(express.static('public/'))
 app.use(cookieParser ())
 
-app.get('/', function(req, res) {
-  res.cookie("My First Cookie", "Yeah!");
-});
-
 io.on('connection', function (socket) {
   socket.nickname = ID();
   socket.color = "black";
@@ -31,8 +27,8 @@ io.on('connection', function (socket) {
   socket.on('/nick', function (nickname) {
     let exist = false;
     for (i = 0; i < users.length; i++) {
-      if(users[i].name === nickname) { 
-        exist = true; 
+      if(users[i].name === nickname) {
+        exist = true;
         break;
       }
     }
@@ -88,14 +84,12 @@ io.on('connection', function (socket) {
 });
 
 //https://gist.github.com/gordonbrander/2230317
-//io.emit('some event', { for: 'everyone' });
 var ID = function () {
   // Math.random should be unique because of its seeding algorithm.
   // Convert it to base 36 (numbers + letters), and grab the first 9 characters
   // after the decimal.
   return '_' + Math.random().toString(36).substr(2, 9);
 };
-
 
 http.listen(3000, function () {
   console.log('listening on *:3000');

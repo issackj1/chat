@@ -14,6 +14,7 @@ body {
 .flex-container {
     display: flex;
     flex-direction: column;
+    height: 100vh;
     width: 100%;
     overflow: auto;
 }
@@ -46,7 +47,7 @@ body {
 }
 .chat-content {
     display: flex;
-    height: 600px;
+    height: 80vh;
     flex-direction: column;
     justify-content: flex-end;
 }
@@ -72,7 +73,7 @@ body {
     border-radius: 10px;
     height: 100%;
     width: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .online-friends {
@@ -105,7 +106,7 @@ form button {
 #outer {
     display: flex;
     flex-direction: column-reverse;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 #messages {
     flex: 23;
