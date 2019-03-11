@@ -46,7 +46,7 @@ body {
 }
 .chat-content {
     display: flex;
-    height: 90%;
+    height: 600px;
     flex-direction: column;
     justify-content: flex-end;
 }
@@ -119,6 +119,7 @@ form button {
 
 #messages li {
     padding: 5px 10px;
+    font-size: 20px;
 }
 
 #messages li:nth-child(odd) {

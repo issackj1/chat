@@ -47,7 +47,6 @@
                         </form>
                     </div>
                 </div>
-
             </div>
 
             <div class="friend-side container">
@@ -56,18 +55,8 @@
                 <div class="online">
                     <ul id="online-friends" class="online-friends list-group"></ul>
                 </div>
-                <div class="">
-                    <form id="update-name" action="">
-                        <div class="input-group">
-                            <input id="nickname" autocomplete="off" type="text" class="form-control" placeholder="Name"
-                                aria-label="Deffaz" aria-describedby="button-addon2"><button
-                                class="btn btn-outline-secondary">Send</button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
-
     </div>
 
 
@@ -76,33 +65,46 @@
         $(function () {
             let socket = io();
             let date = new Date();
+
             $('#send-message').submit(function (e) {
                 e.preventDefault(); // prevents page reloading
-                socket.emit('chat message', $('#m').val());
+
+                if ($('#m').val().includes('/nickcolor')) {
+                    socket.color = $('#m').val().split(" ")[1];
+                    $('#currentuser').html('\xa0\xa0' + '<span style=color:' + socket.color + '>' + socket.nickname + '</span>');
+                    socket.emit('change color', socket.color);
+                }
+                else if ($('#m').val().includes('/nick')) {
+                    let name = $('#m').val().split(" ")[1];
+                    socket.emit('/nick', name);
+                }
+                else {
+                    socket.emit('chat message', $('#m').val(), socket.color);
+                }
                 $('#m').val('');
                 return false;
             });
-            $('#update-name').submit(function (e) {
-                e.preventDefault(); // prevents page reloading
-                $('#currentuser').text(': ' + $('#nickname').val());
-                socket.emit('send-nickname', $('#nickname').val());
-                $('#nickname').val('');
-                return false;
-            });
             socket.on('chat message', function (msg, nickname) {
-                $('#messages').append($('<li>').text(date.getHours() + ":" + date.getMinutes() + " " + nickname + ": " + msg));
+                let minute = date.getMinutes();
+                if (minute < 10) { minute = '0' + date.getMinutes() }
+                $('#messages').append($('<li>').html('(' + date.getHours() + ":" + minute + ')' + "\xa0\xa0" + nickname + ":\xa0\xa0" + msg));
             });
             socket.on('init-name', function (nickname) {
-                $('#currentuser').text(': ' + nickname);
-
+                $('#currentuser').html('\xa0\xa0' + nickname).css("color", socket.color);
+                socket.nickname = nickname;
             });
             socket.on('update users', function (users) {
-                console.log('maybe here');
                 $('#online-friends').empty();
-                for (let value of users) {
-                    $('#online-friends').append($('<li>').text(value));
+                for (i = 0; i < users.length; i++) {
+                    $('#online-friends').append($('<li>').text(users[i].name).css("color", users[i].color));
                 }
                 $('#num-online').text(": " + users.length);
+            });
+            socket.on('update history', function (history) {
+
+                for (let value of history) {
+                    $('#messages').append($('<li>').html(value));
+                }
             });
         });
     </script>
